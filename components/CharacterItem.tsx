@@ -1,6 +1,9 @@
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import Image from "next/image";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
+import { HeartIcon } from "@heroicons/react/outline";
+import { useLocalStorage, useIsClient } from "usehooks-ts";
 
 type Props = {
   character: Character;
@@ -28,20 +31,55 @@ type Character = {
 };
 
 export default function CharacterItem({ character }: Props) {
+  const router = useRouter();
+  const [liked, setLiked] = useLocalStorage<number[]>("liked", []);
+  const isClient = useIsClient();
+
+  const handleLikeClick = () => {
+    if (liked.includes(character.id)) {
+      let arr = liked;
+      var index = arr.indexOf(character.id);
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+      setLiked(arr);
+    } else {
+      let arr = liked;
+      arr.push(character.id);
+      setLiked(arr);
+    }
+  };
+
   return (
-    <Link href={`/character/${character.id}`}>
-      <div className="drop-shadow-md bg-white rounded-lg cursor-pointer overflow-hidden flex flex-col lg:flex-row items-center">
+    <div>
+      <div className="drop-shadow-md bg-white rounded-lg overflow-hidden flex flex-col lg:flex-row items-center">
         <div className="relative h-36 w-36">
           <Image
             src={character.image}
             alt={character.name}
             layout="fill"
             objectFit="cover"
+            className=""
           />
         </div>
         <div className="grow flex flex-col xl:flex-row justify-between items-start px-2 truncate w-full">
           <div>
-            <p className="text-lg font-bold">{character.name}</p>
+            <div
+              className="w-8 h-8 cursor-pointer text-red-600"
+              onClick={handleLikeClick}
+            >
+              {isClient && liked.includes(character.id) ? (
+                <HeartIconSolid />
+              ) : (
+                <HeartIcon />
+              )}
+            </div>
+            <p
+              className="text-lg font-bold cursor-pointer hover:underline"
+              onClick={() => router.push(`/character/${character.id}`)}
+            >
+              {character.name}
+            </p>
             <p>
               {character.status === "Alive" ? "🟢" : "💀"} {character.status}
             </p>
@@ -63,6 +101,6 @@ export default function CharacterItem({ character }: Props) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
