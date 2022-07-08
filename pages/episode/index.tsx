@@ -27,7 +27,7 @@ type Episode = {
 
 type Episodes = Episode[];
 
-const Home = (props: Props) => {
+const Index = (props: Props) => {
   const [episodes, setEpisodes] = useState(props.episodes);
   const [meta, setMeta] = useState(props.meta);
 
@@ -39,8 +39,6 @@ const Home = (props: Props) => {
 
       setEpisodes([...episodes, ...response.data.results]);
       setMeta(response.data.info);
-
-      return { props: { episodes, meta } };
     } catch (error) {
       console.error(error);
     }
@@ -49,9 +47,9 @@ const Home = (props: Props) => {
   return (
     <Page onScrolledToBottomWithOffset={loadMoreEpisodes}>
       <div className="py-8">
-        <p className="">EPISODE</p>
-        <div className="flex justify-center items-center">
-          <div className="grid grid-flow-row grid-cols-2 gap-5 w-2/3">
+        <div className="flex justify-center items-center flex-col gap-8">
+          <p className="text-7xl font-semibold">EPISODES</p>
+          <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-2 md:gap-5 mx-2 md:w-2/3">
             {episodes?.map((episode, index) => (
               <EpisodeItem key={episode.id} episode={episode} />
             ))}
@@ -77,4 +75,4 @@ export async function getServerSideProps({ params }: any) {
   }
 }
 
-export default Home;
+export default Index;

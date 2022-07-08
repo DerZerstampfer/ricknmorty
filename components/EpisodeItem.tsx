@@ -19,7 +19,18 @@ export default function EpisodeItem({ episode }: Props) {
   return (
     <Link href={`/episode/${episode.id}`}>
       <div className="p-4 drop-shadow-md border-2 border-neutral-300 bg-white rounded-lg cursor-pointer">
-        <p className="text-xl font-bold">„{episode.name}“</p>
+        <div className="flex flex-row justify-between items-center">
+          <p className="text-2xl font-bold italic">„{episode.name}“</p>
+          <p>{episode.episode}</p>
+        </div>
+        <div className="flex flex-row justify-between items-center">
+          <p>
+            First broadcast:{" "}
+            <span className="font-semibold">
+              {new Date(episode.air_date).toLocaleDateString()}
+            </span>
+          </p>
+        </div>
       </div>
     </Link>
   );
