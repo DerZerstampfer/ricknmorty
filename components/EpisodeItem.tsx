@@ -18,7 +18,7 @@ type Episode = {
 export default function EpisodeItem({ episode }: Props) {
   return (
     <Link href={`/episode/${episode.id}`}>
-      <div className="p-4 drop-shadow-md border-2 border-neutral-300 bg-white rounded-lg cursor-pointer">
+      <div className="p-4 drop-shadow-md border-2 border-neutral-300 bg-white hover:bg-orange-400 hover:border-black rounded-lg cursor-pointer duration-100">
         <div className="flex flex-row justify-between items-center">
           <p className="text-2xl font-bold italic">„{episode.name}“</p>
           <p>{episode.episode}</p>

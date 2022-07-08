@@ -2,15 +2,15 @@ import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
 import Page from "../../layout/page";
-import EpisodeItem from "../../components/EpisodeItem";
+import CharacterItem from "../../components/CharacterItem";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
 import { useLocalStorage, useIsClient } from "usehooks-ts";
 
 type Props = {
-  character: Character;
-  episodes: Episodes;
-  lastEpisode: number;
+  characters: Characters;
+  episode: Episode;
+  lastCharacter: number;
 };
 
 type Character = {
@@ -34,6 +34,8 @@ type Character = {
   created: string;
 };
 
+type Characters = Character[];
+
 type Episode = {
   id: number;
   name: string;
@@ -44,57 +46,40 @@ type Episode = {
   created: string;
 };
 
-type Episodes = Episode[];
-
 export default function ID(props: Props) {
-  let { character } = props;
-  const [episodes, setEpisodes] = useState(props.episodes);
-  const [lastEpisode, setLastEpisode] = useState(props.lastEpisode);
+  let { episode } = props;
+  const [characters, setCharacters] = useState(props.characters);
+  const [lastCharacter, setLastCharacter] = useState(props.lastCharacter);
   const [liked, setLiked] = useLocalStorage<number[]>("liked", []);
   const isClient = useIsClient();
 
-  const handleLoadMoreEpisodes = async () => {
-    let arr = [...episodes];
-    let last = lastEpisode;
+  const handleLoadMoreCharacters = async () => {
+    let arr = [...characters];
+    let last = lastCharacter;
 
-    if (lastEpisode < character.episode.length) {
+    if (lastCharacter < episode.characters.length) {
       for (
-        let i = lastEpisode + 1;
-        i < character.episode.length && i < lastEpisode + 6;
+        let i = lastCharacter + 1;
+        i < episode.characters.length && i < lastCharacter + 6;
         i++
       ) {
-        const id = character.episode[i].split("/");
+        const id = episode.characters[i].split("/");
 
         const response = await axios.get(
-          `https://rickandmortyapi.com/api/episode/${id[id.length - 1]}`
+          `https://rickandmortyapi.com/api/character/${id[id.length - 1]}`
         );
 
         arr.push(response.data);
         last = i;
       }
 
-      setEpisodes([...arr]);
-      setLastEpisode(last);
-    }
-  };
-
-  const handleLikeClick = () => {
-    if (liked.includes(character.id)) {
-      let arr = liked;
-      var index = arr.indexOf(character.id);
-      if (index !== -1) {
-        arr.splice(index, 1);
-      }
-      setLiked(arr);
-    } else {
-      let arr = liked;
-      arr.push(character.id);
-      setLiked(arr);
+      setCharacters([...arr]);
+      setLastCharacter(last);
     }
   };
 
   return (
-    <Page onScrolledToBottomWithOffset={handleLoadMoreEpisodes}>
+    <Page onScrolledToBottomWithOffset={handleLoadMoreCharacters}>
       <div className="flex flex-col w-full items-center min-h-screen">
         {/* Header */}
         <div className="w-full h-[42vh] flex justify-center items-center">
@@ -113,55 +98,18 @@ export default function ID(props: Props) {
           </div>
           <div>
             {/* Info */}
-            <div className="drop-shadow-md bg-white rounded-lg overflow-hidden flex flex-col lg:flex-row items-center">
-              <div className="relative h-52 w-52">
-                <Image
-                  src={character.image}
-                  alt={character.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className=""
-                />
+            <div className="p-4 drop-shadow-md border-2 border-neutral-300 bg-white hover:bg-orange-400 hover:border-black rounded-lg cursor-pointer duration-100">
+              <div className="flex flex-row justify-between items-center gap-8">
+                <p className="text-2xl font-bold italic">„{episode.name}“</p>
+                <p>{episode.episode}</p>
               </div>
-              <div className="grow flex flex-col xl:flex-row justify-between items-start px-2 truncate w-full">
-                <div>
-                  <p className="text-lg font-bold cursor-pointer hover:underline">
-                    {character.name}
-                  </p>
-                  <p>
-                    {character.status === "Alive" ? "🟢" : "💀"}{" "}
-                    {character.status}
-                  </p>
-                  <p>{character.species}</p>
-                  <p>{character.gender}</p>
-                  <p>{character.type}</p>
-                  <div
-                    className="w-8 h-8 cursor-pointer text-red-600"
-                    onClick={handleLikeClick}
-                  >
-                    {isClient && liked.includes(character.id) ? (
-                      <HeartIconSolid />
-                    ) : (
-                      <HeartIcon />
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-blac font-semibold">
-                    <span className="font-bold text-neutral-600">
-                      Last known location:
-                    </span>
-                    <br />
-                    {character.location.name}
-                  </p>
-                  <p className="text-blac font-semibold">
-                    <span className="font-bold text-neutral-600">
-                      First seen:
-                    </span>
-                    <br />
-                    {character.origin.name}
-                  </p>
-                </div>
+              <div className="flex flex-row justify-between items-center">
+                <p>
+                  First broadcast:{" "}
+                  <span className="font-semibold">
+                    {new Date(episode.air_date).toLocaleDateString()}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -169,11 +117,11 @@ export default function ID(props: Props) {
         {/* Episodes */}
         <div className="flex justify-start items-center flex-col gap-8 py-8 w-full bg-[#212329] grow">
           <p className="text-white text-5xl text-center font-semibold mb-4">
-            Episodes starring {character.name}
+            Characters starring {episode.name}
           </p>
           <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-2 md:gap-5 mx-2 md:w-2/3">
-            {episodes?.map((episode, index) => (
-              <EpisodeItem key={episode.id} episode={episode} />
+            {characters?.map((character, index) => (
+              <CharacterItem key={character.id} character={character} />
             ))}
           </div>
         </div>
@@ -183,28 +131,28 @@ export default function ID(props: Props) {
 }
 
 export async function getServerSideProps({ params }: any) {
-  let character: Character;
-  let episodes: Episodes = [];
-  let lastEpisode = 0;
+  let characters: Characters = [];
+  let episode: Episode;
+  let lastCharacter = 0;
 
   try {
     const response = await axios.get(
-      `https://rickandmortyapi.com/api/character/${params.id}`
+      `https://rickandmortyapi.com/api/episode/${params.id}`
     );
-    character = response.data;
+    episode = response.data;
 
-    for (let i = 0; i < character.episode.length && i < 6; i++) {
-      const id = character.episode[i].split("/");
+    for (let i = 0; i < episode.characters.length && i < 6; i++) {
+      const id = episode.characters[i].split("/");
 
       const response2 = await axios.get(
-        `https://rickandmortyapi.com/api/episode/${id[id.length - 1]}`
+        `https://rickandmortyapi.com/api/character/${id[id.length - 1]}`
       );
 
-      episodes.push(response2.data);
-      lastEpisode = i;
+      characters.push(response2.data);
+      lastCharacter = i;
     }
 
-    return { props: { character, episodes, lastEpisode } };
+    return { props: { characters, episode, lastCharacter } };
   } catch (error) {
     console.error(error);
   }

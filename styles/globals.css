@@ -6,6 +6,29 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Segoe;
+  /* selection:text-{color} selection:bg-{color} */
+}
+
+::-moz-selection {
+  /* Code for Firefox */
+  color: #fb923c;
+  background: #212329;
+}
+
+::selection {
+  color: #fb923c;
+  background: #212329;
+}
+
+@font-face {
+  font-family: "Segoe";
+  font-weight: 400;
+  src: url("/Segoe UI.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Segoe";
+  src: url("/Segoe UI Bold.ttf") format("truetype");
+  font-weight: 600;
 }

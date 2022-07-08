@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import NavBar from "../components/NavBar";
 
 import { useDebounce } from "usehooks-ts";
 
@@ -58,6 +59,7 @@ const Page = ({
         fullScreen ? "h-screen flex flex-grow" : "h-auto"
       } bg-slate-800`}
     >
+      <NavBar />
       {children}
     </div>
   );
