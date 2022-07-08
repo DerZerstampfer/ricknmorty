@@ -64,16 +64,6 @@ export default function CharacterItem({ character }: Props) {
         </div>
         <div className="grow flex flex-col xl:flex-row justify-between items-start px-2 truncate w-full">
           <div>
-            <div
-              className="w-8 h-8 cursor-pointer text-red-600"
-              onClick={handleLikeClick}
-            >
-              {isClient && liked.includes(character.id) ? (
-                <HeartIconSolid />
-              ) : (
-                <HeartIcon />
-              )}
-            </div>
             <p
               className="text-lg font-bold cursor-pointer hover:underline"
               onClick={() => router.push(`/character/${character.id}`)}
@@ -84,6 +74,16 @@ export default function CharacterItem({ character }: Props) {
               {character.status === "Alive" ? "🟢" : "💀"} {character.status}
             </p>
             <p>{character.species}</p>
+            <div
+              className="w-8 h-8 cursor-pointer text-red-600"
+              onClick={handleLikeClick}
+            >
+              {isClient && liked.includes(character.id) ? (
+                <HeartIconSolid />
+              ) : (
+                <HeartIcon />
+              )}
+            </div>
           </div>
           <div>
             <p className="text-blac font-semibold">
