@@ -52,14 +52,14 @@ export default function CharacterItem({ character }: Props) {
 
   return (
     <div>
-      <div className="drop-shadow-md bg-white rounded-lg overflow-hidden flex flex-col lg:flex-row items-center">
-        <div className="relative h-36 w-36">
+      <div className="drop-shadow-md bg-white rounded-lg overflow-hidden flex flex-col lg:flex-row items-center group">
+        <div className="relative h-36 w-36 overflow-hidden">
           <Image
             src={character.image}
             alt={character.name}
             layout="fill"
             objectFit="cover"
-            className=""
+            className="group-hover:scale-125 duration-200"
           />
         </div>
         <div className="grow flex flex-col xl:flex-row justify-between items-start px-2 truncate w-full">

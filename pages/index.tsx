@@ -41,6 +41,7 @@ const Home: NextPage = () => {
             <a
               href="https://paukraft.omegalul.co/"
               target="_blank"
+              rel="noreferrer"
               className="underline hover:text-orange-400 duration-100"
             >
               Pau Kraft
@@ -49,6 +50,7 @@ const Home: NextPage = () => {
             <a
               href="https://www.sodefa.de/"
               target="_blank"
+              rel="noreferrer"
               className="underline hover:text-orange-400 duration-100"
             >
               Sodefa
@@ -56,7 +58,7 @@ const Home: NextPage = () => {
           </p>
         </div>
         <Divider className="w-96 border-slate-300 opacity-20" />
-        <div>
+        <div className="ring-1 ring-slate-200 p-12 rounded-xl hover:bg-orange-400 hover:bg-opacity-5 duration-100">
           <p className="text-white text-3xl text-center font-semibold mb-4">
             Technologies used for this project
           </p>
@@ -77,6 +79,7 @@ const Home: NextPage = () => {
           <a
             href="https://paukraft.omegalul.co/"
             target="_blank"
+            rel="noreferrer"
             className="underline hover:text-orange-400 duration-100"
           >
             Pau Kraft
@@ -85,6 +88,7 @@ const Home: NextPage = () => {
           <a
             href="https://www.sodefa.de/"
             target="_blank"
+            rel="noreferrer"
             className="underline hover:text-orange-400 duration-100"
           >
             Sodefa
@@ -99,7 +103,7 @@ function TechLink(props: any) {
   const { link, text } = props;
   return (
     <a href={link}>
-      <p className="text-lg font-semibold font-[Segoe] text-white cursor-pointer hover:text-neutral-800 py-1 px-3 ring-1 ring-orange-400  hover:bg-orange-400 rounded-md duration-100">
+      <p className="text-lg font-semibold font-[Segoe] text-white cursor-pointer hover:text-neutral-800 py-1 px-3 ring-1 ring-orange-400 bg-[#212329] hover:bg-orange-400 rounded-md duration-100">
         {text}
       </p>
     </a>

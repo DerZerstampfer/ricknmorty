@@ -6,11 +6,13 @@ import EpisodeItem from "../../components/EpisodeItem";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
 import { useLocalStorage, useIsClient } from "usehooks-ts";
+import { useRouter } from "next/router";
 
 type Props = {
   character: Character;
   episodes: Episodes;
   lastEpisode: number;
+  error?: boolean;
 };
 
 type Character = {
@@ -47,11 +49,12 @@ type Episode = {
 type Episodes = Episode[];
 
 export default function ID(props: Props) {
-  let { character } = props;
+  let { character, error } = props;
   const [episodes, setEpisodes] = useState(props.episodes);
   const [lastEpisode, setLastEpisode] = useState(props.lastEpisode);
   const [liked, setLiked] = useLocalStorage<number[]>("liked", []);
   const isClient = useIsClient();
+  const router = useRouter();
 
   const handleLoadMoreEpisodes = async () => {
     let arr = [...episodes];
@@ -92,6 +95,10 @@ export default function ID(props: Props) {
       setLiked(arr);
     }
   };
+
+  if (error) {
+    router.push("/error");
+  }
 
   return (
     <Page onScrolledToBottomWithOffset={handleLoadMoreEpisodes}>
@@ -183,7 +190,7 @@ export default function ID(props: Props) {
 }
 
 export async function getServerSideProps({ params }: any) {
-  let character: Character;
+  let character: Character = {};
   let episodes: Episodes = [];
   let lastEpisode = 0;
 
@@ -207,5 +214,6 @@ export async function getServerSideProps({ params }: any) {
     return { props: { character, episodes, lastEpisode } };
   } catch (error) {
     console.error(error);
+    return { props: { character, episodes, lastEpisode, error: true } };
   }
 }
