@@ -61,6 +61,28 @@ const Page = ({
     >
       <NavBar />
       {children}
+      <footer className="bg-[#212329] py-3">
+        <p className="text-white  text-center font-semibold">
+          Made with ❤️ by{" "}
+          <a
+            href="https://paukraft.omegalul.co/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:text-orange-400 duration-100"
+          >
+            Pau Kraft
+          </a>{" "}
+          challenged by{" "}
+          <a
+            href="https://www.sodefa.de/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:text-orange-400 duration-100"
+          >
+            Sodefa
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };
