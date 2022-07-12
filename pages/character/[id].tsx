@@ -189,8 +189,31 @@ export default function ID(props: Props) {
   );
 }
 
+function emptyChar() {
+  return {
+    id: 0,
+    name: "",
+    status: "",
+    species: "",
+    type: "",
+    gender: "",
+    origin: {
+      name: "",
+      url: "",
+    },
+    location: {
+      name: "",
+      url: "",
+    },
+    image: "",
+    episode: [],
+    url: "",
+    created: "",
+  };
+}
+
 export async function getServerSideProps({ params }: any) {
-  let character: Character = {};
+  let character: Character = emptyChar();
   let episodes: Episodes = [];
   let lastEpisode = 0;
 
